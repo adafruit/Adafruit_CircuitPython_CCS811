@@ -39,7 +39,7 @@ ccs =  Adafruit_CCS811.Adafruit_CCS811(myI2C)
 To read the gas sensor and thermistor you can do the following: 
 
 ```
-if(ccs.available()):
+if ccs.data_ready:
 		temp = ccs.calculateTemperature()
 		if not ccs.readData():
 			print("CO2: ", ccs.eCO2, " TVOC:", ccs.TVOC, " temp:", temp)

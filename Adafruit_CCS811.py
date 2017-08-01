@@ -83,20 +83,20 @@ CCS811_REF_RESISTOR = const(100000)
 
 class Adafruit_CCS811:
 	#set up the registers
-	#self._status = Adafruit_bitfield([('ERROR' , 1), ('unused', 2), ('DATA_READY' , 1), ('APP_VALID', 1), ('unused2' , 2), ('FW_MODE' , 1)])
-	_error = i2c_bit.ROBit(0x00, 0)
-	_data_ready = i2c_bit.ROBit(0x00, 3)
-	_app_valid = i2c_bit.ROBit(0x00, 4)
-	_fw_mode = i2c_bit.ROBit(0x00, 7)
+	#self.status = Adafruit_bitfield([('ERROR' , 1), ('unused', 2), ('DATA_READY' , 1), ('APP_VALID', 1), ('unused2' , 2), ('FW_MODE' , 1)])
+	error = i2c_bit.ROBit(0x00, 0)
+	data_ready = i2c_bit.ROBit(0x00, 3)
+	app_valid = i2c_bit.ROBit(0x00, 4)
+	fw_mode = i2c_bit.ROBit(0x00, 7)
 
-	_hw_id = i2c_bits.ROBits(8, 0x20, 0)
+	hw_id = i2c_bits.ROBits(8, 0x20, 0)
 
-	#self._meas_mode = Adafruit_bitfield([('unused', 2), ('INT_THRESH', 1), ('INT_DATARDY', 1), ('DRIVE_MODE', 3)])
-	_int_thresh = i2c_bit.RWBit(0x01, 2)
-	_int_datardy = i2c_bit.RWBit(0x01, 3)
-	_drive_mode = i2c_bits.RWBits(3, 0x01, 4)
+	#self.meas_mode = Adafruit_bitfield([('unused', 2), ('INT_THRESH', 1), ('INT_DATARDY', 1), ('DRIVE_MODE', 3)])
+	int_thresh = i2c_bit.RWBit(0x01, 2)
+	interrupt_enabled = i2c_bit.RWBit(0x01, 3)
+	drive_mode = i2c_bits.RWBits(3, 0x01, 4)
 
-	#self._error_id = Adafruit_bitfield([('WRITE_REG_INVALID', 1), ('READ_REG_INVALID', 1), ('MEASMODE_INVALID', 1), ('MAX_RESISTANCE', 1), ('HEATER_FAULT', 1), ('HEATER_SUPPLY', 1)])
+	#self.error_id = Adafruit_bitfield([('WRITE_REG_INVALID', 1), ('READ_REG_INVALID', 1), ('MEASMODE_INVALID', 1), ('MAX_RESISTANCE', 1), ('HEATER_FAULT', 1), ('HEATER_SUPPLY', 1)])
 
 	TVOC = 0
 	eCO2 = 0
@@ -105,8 +105,8 @@ class Adafruit_CCS811:
 		self.i2c_device = I2CDevice(i2c, addr)
 
 			#check that the HW id is correct
-		if(self._hw_id != CCS811_HW_ID_CODE):
-			raise Exception("Device ID returned is not correct! Please check your wiring.")
+		if self.hw_id != CCS811_HW_ID_CODE:
+			raise RuntimeException("Device ID returned is not correct! Please check your wiring.")
 		
 		#try to start the app
 		buf = bytearray(1)
@@ -115,36 +115,28 @@ class Adafruit_CCS811:
 		time.sleep(.1)
 		
 		#make sure there are no errors and we have entered application mode
-		if(self.checkError()):
-			raise Exception("Device returned an Error! Try removing and reapplying power to the device and running the code again.")
-		if(not self._fw_mode):
-			raise Exception("Device did not enter application mode! If you got here, there may be a problem with the firmware on your sensor.")
+		if self.checkError():
+			raise RuntimeException("Device returned an Error! Try removing and reapplying power to the device and running the code again.")
+		if not self.fw_mode:
+			raise RuntimeException("Device did not enter application mode! If you got here, there may be a problem with the firmware on your sensor.")
 		
-		self.disableInterrupt()
+		self.interrupt_enabled = False
 		
 		#default to read every second
 		self.setDriveMode(CCS811_DRIVE_MODE_1SEC)
 
 
 	def setDriveMode(self, mode):
-		self._drive_mode = mode
-
-
-	def enableInterrupt(self):
-		self._int_datardy = 1
-
-
-	def disableInterrupt(self):
-		self._int_datardy = 0
+		self.drive_mode = mode
 
 
 	def available(self):
-		return self._data_ready
+		return self.data_ready
 
 
 	def readData(self):
 
-		if(not self.available()):
+		if not self.data_ready:
 			return False
 		else:
 			buf = bytearray(9)
@@ -155,7 +147,7 @@ class Adafruit_CCS811:
 			self.eCO2 = (buf[1] << 8) | (buf[2])
 			self.TVOC = (buf[3] << 8) | (buf[4])
 			
-			if(self._error):
+			if self.error:
 				return buf[6]
 				
 			else:
@@ -227,4 +219,4 @@ class Adafruit_CCS811:
 
 
 	def checkError(self):
-		return self._error
+		return self.error
