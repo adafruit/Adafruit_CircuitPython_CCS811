@@ -6,7 +6,6 @@ This driver depends on the Register and Bus Device libraries. Please ensure they
 
 # Usage Notes
 
-Basics
 see here for wiring and installation instructions:
 https://learn.adafruit.com/ccs811-air-quality-sensor/circuit-python-example
 
