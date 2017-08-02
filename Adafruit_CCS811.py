@@ -100,6 +100,8 @@ class Adafruit_CCS811:
 
 	TVOC = 0
 	eCO2 = 0
+	
+	tempOffset = 0.0
 
 	def __init__(self, i2c, addr=0x5A):
 		self.i2c_device = I2CDevice(i2c, addr)
@@ -193,17 +195,18 @@ class Adafruit_CCS811:
 		self.i2c_device.write(buf, end=1, stop=False)
 		self.i2c_device.read_into(buf, start=1)
 
-		VRref = (buf[1] << 8) | buf[2]
-		VRntc = (buf[3] << 8) | buf[4]
-		Rntc = (float(VRntc) * float(CCS811_REF_RESISTOR) / float(VRref) )
+		vref = (buf[1] << 8) | buf[2]
+		vntc = (buf[3] << 8) | buf[4]
 
-		#Code from Milan Malesevic and Zoran Stupic, 2011,
-		#Modified by Max Mayfield,
-		temp = math.log(Rntc)
-		temp = 1. / (0.001129148 + (0.000234125 * temp) + (0.0000000876741 * temp * temp * temp))
-		temp = temp - 273.15  # Convert Kelvin to Celsius
-		
-	 	return temp
+		#from ams ccs811 app note
+		rntc = float(vntc) * CCS811_REF_RESISTOR / float(vref)
+
+		ntc_temp = math.log(rntc / CCS811_REF_RESISTOR)
+		ntc_temp /= 3380.0
+		ntc_temp += 1.0 / (25 + 273.15)
+		ntc_temp = 1.0 / ntc_temp
+		ntc_temp -= 273.15
+		return ntc_temp - self.tempOffset
 
 
 	def setThresholds(self, low_med, med_high, hysteresis):
