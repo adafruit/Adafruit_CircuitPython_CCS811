@@ -201,7 +201,7 @@ class Adafruit_CCS811:
 		#from ams ccs811 app note
 		rntc = float(vntc) * CCS811_REF_RESISTOR / float(vref)
 
-		ntc_temp = math.log(rntc / CCS811_REF_RESISTOR)
+		ntc_temp = math.log(rntc / 10000.0)
 		ntc_temp /= 3380.0
 		ntc_temp += 1.0 / (25 + 273.15)
 		ntc_temp = 1.0 / ntc_temp
