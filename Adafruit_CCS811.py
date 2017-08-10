@@ -108,7 +108,7 @@ class Adafruit_CCS811:
 
 			#check that the HW id is correct
 		if self.hw_id != CCS811_HW_ID_CODE:
-			raise RuntimeException("Device ID returned is not correct! Please check your wiring.")
+			raise RuntimeError("Device ID returned is not correct! Please check your wiring.")
 		
 		#try to start the app
 		buf = bytearray(1)
@@ -118,9 +118,9 @@ class Adafruit_CCS811:
 		
 		#make sure there are no errors and we have entered application mode
 		if self.checkError():
-			raise RuntimeException("Device returned an Error! Try removing and reapplying power to the device and running the code again.")
+			raise RuntimeError("Device returned an Error! Try removing and reapplying power to the device and running the code again.")
 		if not self.fw_mode:
-			raise RuntimeException("Device did not enter application mode! If you got here, there may be a problem with the firmware on your sensor.")
+			raise RuntimeError("Device did not enter application mode! If you got here, there may be a problem with the firmware on your sensor.")
 		
 		self.interrupt_enabled = False
 		
