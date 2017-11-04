@@ -125,7 +125,7 @@ class CCS811:
 		buf[0] = 0xE0
 		with self.i2c_device as i2c:
 			i2c.write(buf, end=1, stop=False)
-			i2c.read_into(buf, start=1)
+			i2c.readinto(buf, start=1)
 		return buf[1]
 
 	def _update_data(self):
@@ -134,7 +134,7 @@ class CCS811:
 			buf[0] = CCS811_ALG_RESULT_DATA
 			with self.i2c_device as i2c:
 				i2c.write(buf, end=1, stop=False)
-				i2c.read_into(buf, start=1)
+				i2c.readinto(buf, start=1)
 
 			self._eCO2 = (buf[1] << 8) | (buf[2])
 			self._TVOC = (buf[3] << 8) | (buf[4])
@@ -160,7 +160,7 @@ class CCS811:
 		buf[0] = CCS811_NTC
 		with self.i2c_device as i2c:
 			i2c.write(buf, end=1, stop=False)
-			i2c.read_into(buf, start=1)
+			i2c.readinto(buf, start=1)
 
 		vref = (buf[1] << 8) | buf[2]
 		vntc = (buf[3] << 8) | buf[4]
