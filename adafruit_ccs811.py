@@ -40,6 +40,9 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from adafruit_register import i2c_bit
 from adafruit_register import i2c_bits
 
+__version__ = "0.0.0-auto.0"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_CCS811.git"
+
 _ALG_RESULT_DATA = const(0x02)
 _RAW_DATA = const(0x03)
 _ENV_DATA = const(0x05)
