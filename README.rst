@@ -42,14 +42,14 @@ Next, initialize the I2C bus object.
 .. code:: python
 
     from board import *
-    myI2C = busio.I2C(SCL, SDA)
+    i2c_bus = busio.I2C(SCL, SDA)
 
 Once you have created the I2C interface object, you can use it to instantiate
 the CCS811 object
 
 .. code:: python
 
-    ccs =  adafruit_ccs811.CCS811(myI2C)
+    ccs =  adafruit_ccs811.CCS811(i2c_bus)
 
 Reading Sensor
 --------------
