@@ -21,8 +21,8 @@
 # THE SOFTWARE.
 
 """
-`CCS811` - CCS811 air quality sensor
-====================================================
+`CCS811` - Adafruit CCS811 Air Quality Sensor Breakout - VOC and eCO2
+======================================================================
 This library supports the use of the CCS811 air quality sensor in CircuitPython.
 
 Author(s): Dean Miller for Adafruit Industries
