@@ -95,8 +95,8 @@ class CCS811:
     temp_offset = 0.0
     """Temperature offset."""
 
-    def __init__(self, i2c_bus, addr=0x5A):
-        self.i2c_device = I2CDevice(i2c_bus, addr)
+    def __init__(self, i2c_bus, address=0x5A):
+        self.i2c_device = I2CDevice(i2c_bus, address)
 
         #check that the HW id is correct
         if self.hw_id != _HW_ID_CODE:
