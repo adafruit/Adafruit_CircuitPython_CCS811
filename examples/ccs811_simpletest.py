@@ -16,5 +16,5 @@ temp = ccs.temperature
 ccs.temp_offset = temp - 25.0
 
 while True:
-    print("CO2: ", ccs.eCO2, " TVOC:", ccs.TVOC, " temp:", ccs.temperature)
+    print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc, " temp:", ccs.temperature)
     time.sleep(.5)
