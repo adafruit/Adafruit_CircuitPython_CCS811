@@ -122,8 +122,8 @@ class CCS811:
         #default to read every second
         self.drive_mode = DRIVE_MODE_1SEC
 
-        self._eCO2 = None # pylint: disable=invalid-name
-        self._TVOC = None # pylint: disable=invalid-name
+        self._eco2 = None # pylint: disable=invalid-name
+        self._tvoc = None # pylint: disable=invalid-name
 
     @property
     def error_code(self):
