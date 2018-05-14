@@ -62,7 +62,7 @@ To read the gas sensor and temperature simply read the attributes:
 
 .. code:: python
 
-    print("CO2: ", ccs.eCO2, " TVOC:", ccs.TVOC, " temp:", ccs.temperature)
+    print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc, " temp:", ccs.temperature)
 
 Contributing
 ============
