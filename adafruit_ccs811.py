@@ -143,22 +143,22 @@ class CCS811:
                 i2c.write(buf, end=1, stop=False)
                 i2c.readinto(buf, start=1)
 
-            self._eCO2 = (buf[1] << 8) | (buf[2])
-            self._TVOC = (buf[3] << 8) | (buf[4])
+            self._eco2 = (buf[1] << 8) | (buf[2])
+            self._tvoc = (buf[3] << 8) | (buf[4])
 
             if self.error:
                 raise RuntimeError("Error:" + str(self.error_code))
 
     @property
-    def TVOC(self): # pylint: disable=invalid-name
+    def tvoc(self): # pylint: disable=invalid-name
         """Total Volatile Organic Compound in parts per billion."""
         self._update_data()
-        return self._TVOC
+        return self._tvoc
 
     @property
-    def eCO2(self): # pylint: disable=invalid-name
+    def eco2(self): # pylint: disable=invalid-name
         """Equivalent Carbon Dioxide in parts per million. Clipped to 400 to 8192ppm."""
-        return self._eCO2
+        return self._eco2
 
     @property
     def temperature(self):
