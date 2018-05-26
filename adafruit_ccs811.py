@@ -158,6 +158,7 @@ class CCS811:
     @property
     def eco2(self): # pylint: disable=invalid-name
         """Equivalent Carbon Dioxide in parts per million. Clipped to 400 to 8192ppm."""
+        self._update_data()
         return self._eco2
 
     @property
