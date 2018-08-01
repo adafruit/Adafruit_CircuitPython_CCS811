@@ -1,31 +1,31 @@
-# This is a common .travis.yml for generating library release zip files for
-# CircuitPython library releases using circuitpython-build-tools.
-# See https://github.com/adafruit/circuitpython-build-tools for detailed setup
-# instructions.
-
 dist: trusty
 sudo: false
 language: python
 python:
-    - "3.6"
-
+- '3.6'
 cache:
-    pip: true
-
+  pip: true
 deploy:
   provider: releases
-  api_key: $GITHUB_TOKEN
+  api_key: "$GITHUB_TOKEN"
   file_glob: true
-  file: $TRAVIS_BUILD_DIR/bundles/*
+  file: "$TRAVIS_BUILD_DIR/bundles/*"
   skip_cleanup: true
+  overwrite: true
   on:
     tags: true
-
+- provider: pypi
+  user: adafruit-travis
+  on:
+    tags: true
+  password:
+    secure: jK3ycP/k1bDVwAMqKWlJ4q8LnBtHDahYGLIMqvQhP9wlIB7OaMCjO4V246OuKb2fxZNqodpDtPDvmp+KwOLahA6MBb5jKviFhkUIPa/vQ6jEc93pJWCzUNrygqFz4JK9D/aiF3e7pH6fSJwbfoFJtabfJYWmx539JsL651qn1ew4oPA4s5KT4E8Mm3hraWJrS5ni7rFGgeYpbYkrkxOd1yVUOH0T7V58bSUW996iH9hZ+ghB3jUVJqn4h3TaHI0VZ94PeZhIzcjjTEE0TYJxdV+JI0bfO9TY2Y1CeE7LVTnM2JbWGq3wCehVX6fF3lh5RNLz9ronPnmQJtzeqcLTG20Q8mhvQEvBYJs+uMJyQt5DqFWBmFitxnSxRCv7cZ/AIntDBsgE854Qe7ldMFCxo4yxPgQU0n4Li3DvlnYfhWrb8liTf68X/OABslLz+XR6kcOtg3W8ykWqMnw6Kia99QLEgCGdWlYYDLvo1wLT0/izxV7bfFF32z8ZMLn6YhkpjS4pPBMdwKHF5Vywo7QDVeoGUGnqjcDHhOBoUs8avSwQG0ek7iKHfyMSdHdq1fCZ0BgxcP6s6aXGdGLvV80Bam0H0rFN6dFIxwei5+t+WHIDx5Gn9WHWDmRNl3Fr4Aj7D5/WVwYFaxQsS4MVKFu4hzYs84s8qloJ6V1M31+Y9Xc=
 install:
-  - pip install pylint circuitpython-build-tools Sphinx sphinx-rtd-theme
-
+- pip install -r requirements.txt
+- pip install pylint circuitpython-build-tools Sphinx sphinx-rtd-theme
 script:
-  - pylint adafruit_ccs811.py
-  - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name examples/*.py)
-  - circuitpython-build-bundles --filename_prefix adafruit-circuitpython-ccs811 --library_location .
-  - cd docs && sphinx-build -E -W -b html . _build/html
+- pylint adafruit_ccs811.py
+- ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name examples/*.py)
+- circuitpython-build-bundles --filename_prefix adafruit-circuitpython-ccs811 --library_location
+  .
+- cd docs && sphinx-build -E -W -b html . _build/html && cd ..
