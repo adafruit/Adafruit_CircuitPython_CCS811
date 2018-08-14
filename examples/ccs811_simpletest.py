@@ -3,11 +3,11 @@ import time
 from board import SCL, SDA
 import busio
 
-import adafruit_CCS811
+import adafruit_ccs811
 
 i2c_bus = busio.I2C(SCL, SDA)
 
-ccs = adafruit_CCS811.CCS811(i2c_bus)
+ccs = adafruit_ccs811.CCS811(i2c_bus)
 
 #wait for the sensor to be ready and calibrate the thermistor
 while not ccs.data_ready:
