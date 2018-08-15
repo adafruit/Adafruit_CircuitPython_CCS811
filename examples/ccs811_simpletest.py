@@ -1,20 +1,18 @@
 import time
-
-from board import SCL, SDA
+import board
 import busio
-
 import adafruit_ccs811
 
-i2c_bus = busio.I2C(SCL, SDA)
+i2c_bus = busio.I2C(board.SCL, board.SDA)
+ccs811 = adafruit_ccs811.CCS811(i2c_bus)
 
-ccs = adafruit_ccs811.CCS811(i2c_bus)
-
-#wait for the sensor to be ready and calibrate the thermistor
-while not ccs.data_ready:
+# Wait for the sensor to be ready and calibrate the thermistor
+while not ccs811.data_ready:
     pass
-temp = ccs.temperature
-ccs.temp_offset = temp - 25.0
+temp = ccs811.temperature
+ccs811.temp_offset = temp - 25.0
 
 while True:
-    print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc, " temp:", ccs.temperature)
-    time.sleep(.5)
+    print("CO2: %1.0f PPM, TVOC: %1.0f PPM, Temp: %0.1f C" %
+          (ccs811.eco2, ccs811.tvoc, ccs811.temperature))
+    time.sleep(0.5)
