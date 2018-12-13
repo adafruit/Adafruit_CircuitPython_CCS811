@@ -34,6 +34,7 @@ Author(s): Dean Miller for Adafruit Industries
 """
 import time
 import math
+import struct
 
 from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
@@ -192,21 +193,16 @@ class CCS811:
         # Humidity is stored as an unsigned 16 bits in 1/512%RH. The default
         # value is 50% = 0x64, 0x00. As an example 48.5% humidity would be 0x61,
         # 0x00.
-        hum_perc = int(humidity) << 1
+        humidity = int(humidity * 512)
 
         # Temperature is stored as an unsigned 16 bits integer in 1/512 degrees
         # there is an offset: 0 maps to -25C. The default value is 25C = 0x64,
         # 0x00. As an example 23.5% temperature would be 0x61, 0x00.
-        parts = math.fmod(temperature)
-        fractional = parts[0]
-        temperature = parts[1]
+        temperature = int((temperature + 25) * 512)
 
-        temp_high = ((temperature + 25) << 9)
-        temp_low = ((fractional / 0.001953125) & 0x1FF)
-
-        temp_conv = (temp_high | temp_low)
-
-        buf = bytearray([_ENV_DATA, hum_perc, 0x00, ((temp_conv >> 8) & 0xFF), (temp_conv & 0xFF)])
+        buf = bytearray(5)
+        buf[0] = _ENV_DATA
+        struct.pack_into(">HH", buf, 1, humidity, temperature)
 
         with self.i2c_device as i2c:
             i2c.write(buf)
