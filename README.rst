@@ -10,8 +10,8 @@ Adafruit CircuitPython CCS811 Library
     :target: https://adafru.it/discord
     :alt: Discord
 
-.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_CCS811.svg?branch=master
-    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_CCS811
+.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_CCS811.svg?branch=master
+    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_CCS811
     :alt: Build Status
 
 CircuitPython driver for the `CCS811 air quality sensor <https://www.adafruit.com/product/3566>`_.
