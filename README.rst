@@ -39,7 +39,7 @@ Of course, you must import the library to use it:
 .. code:: python
 
     import busio
-    import adafruit_CCS811
+    import adafruit_ccs811
 
 Next, initialize the I2C bus object.
 
