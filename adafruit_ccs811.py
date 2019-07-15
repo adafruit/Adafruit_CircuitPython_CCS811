@@ -164,7 +164,11 @@ class CCS811:
 
     @property
     def temperature(self):
-        """Temperature based on optional thermistor in Celsius."""
+        """
+        .. deprecated:: 1.1.5
+           Hardware support removed by vendor
+
+        Temperature based on optional thermistor in Celsius."""
         buf = bytearray(5)
         buf[0] = _NTC
         with self.i2c_device as i2c:
