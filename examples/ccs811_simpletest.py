@@ -14,4 +14,3 @@ while True:
     print("CO2: {} PPM, TVOC: {} PPM"
           .format(ccs811.eco2, ccs811.tvoc))
     time.sleep(0.5)
-
