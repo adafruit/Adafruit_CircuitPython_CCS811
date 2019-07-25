@@ -53,7 +53,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='adafruit air quality voc eco2 temperature breakout hardware micropython circuitpython',
+    keywords='adafruit air quality voc eco2 breakout hardware micropython circuitpython',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
