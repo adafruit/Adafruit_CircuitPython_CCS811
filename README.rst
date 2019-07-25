@@ -58,11 +58,11 @@ the CCS811 object
 Reading Sensor
 --------------
 
-To read the gas sensor and temperature simply read the attributes:
+To read the gas sensor simply read the attributes:
 
 .. code:: python
 
-    print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc, " temp:", ccs.temperature)
+    print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc)
 
 Contributing
 ============
