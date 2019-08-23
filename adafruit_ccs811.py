@@ -107,7 +107,7 @@ class CCS811:
         buf = bytearray(1)
         buf[0] = 0xF4
         with self.i2c_device as i2c:
-            i2c.write(buf, end=1, stop=True)
+            i2c.write(buf, end=1)
         time.sleep(.1)
 
         #make sure there are no errors and we have entered application mode
@@ -132,8 +132,7 @@ class CCS811:
         buf = bytearray(2)
         buf[0] = 0xE0
         with self.i2c_device as i2c:
-            i2c.write(buf, end=1, stop=False)
-            i2c.readinto(buf, start=1)
+            i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
         return buf[1]
 
     def _update_data(self):
@@ -141,8 +140,7 @@ class CCS811:
             buf = bytearray(9)
             buf[0] = _ALG_RESULT_DATA
             with self.i2c_device as i2c:
-                i2c.write(buf, end=1, stop=False)
-                i2c.readinto(buf, start=1)
+                i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
 
             self._eco2 = (buf[1] << 8) | (buf[2])
             self._tvoc = (buf[3] << 8) | (buf[4])
@@ -172,8 +170,7 @@ class CCS811:
         buf = bytearray(5)
         buf[0] = _NTC
         with self.i2c_device as i2c:
-            i2c.write(buf, end=1, stop=False)
-            i2c.readinto(buf, start=1)
+            i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
 
         vref = (buf[1] << 8) | buf[2]
         vntc = (buf[3] << 8) | buf[4]
