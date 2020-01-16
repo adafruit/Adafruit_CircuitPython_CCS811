@@ -56,7 +56,7 @@ To install in a virtual environment in your current project:
 Usage Notes
 ===========
 
-See `the guide <https://learn.adafruit.com/ccs811-air-quality-sensor/circuit-python-example>`_
+See `the guide <https://learn.adafruit.com/adafruit-ccs811-air-quality-sensor/python-circuitpython>`_
 for wiring and installation instructions.
 
 Of course, you must import the library to use it:
