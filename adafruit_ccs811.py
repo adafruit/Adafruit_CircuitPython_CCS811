@@ -73,13 +73,15 @@ DRIVE_MODE_250MS = const(0x04)
 _HW_ID_CODE = const(0x81)
 _REF_RESISTOR = const(100000)
 
+
 class CCS811:
     """CCS811 gas sensor driver.
 
     :param ~busio.I2C i2c: The I2C bus.
     :param int addr: The I2C address of the CCS811.
     """
-    #set up the registers
+
+    # set up the registers
     error = i2c_bit.ROBit(0x00, 0)
     """True when an error has occured."""
     data_ready = i2c_bit.ROBit(0x00, 3)
@@ -99,32 +101,38 @@ class CCS811:
     def __init__(self, i2c_bus, address=0x5A):
         self.i2c_device = I2CDevice(i2c_bus, address)
 
-        #check that the HW id is correct
+        # check that the HW id is correct
         if self.hw_id != _HW_ID_CODE:
-            raise RuntimeError("Device ID returned is not correct! Please check your wiring.")
+            raise RuntimeError(
+                "Device ID returned is not correct! Please check your wiring."
+            )
 
-        #try to start the app
+        # try to start the app
         buf = bytearray(1)
         buf[0] = 0xF4
         with self.i2c_device as i2c:
             i2c.write(buf, end=1)
-        time.sleep(.1)
+        time.sleep(0.1)
 
-        #make sure there are no errors and we have entered application mode
+        # make sure there are no errors and we have entered application mode
         if self.error:
-            raise RuntimeError("Device returned a error! Try removing and reapplying power to "
-                               "the device and running the code again.")
+            raise RuntimeError(
+                "Device returned a error! Try removing and reapplying power to "
+                "the device and running the code again."
+            )
         if not self.fw_mode:
-            raise RuntimeError("Device did not enter application mode! If you got here, there may "
-                               "be a problem with the firmware on your sensor.")
+            raise RuntimeError(
+                "Device did not enter application mode! If you got here, there may "
+                "be a problem with the firmware on your sensor."
+            )
 
         self.interrupt_enabled = False
 
-        #default to read every second
+        # default to read every second
         self.drive_mode = DRIVE_MODE_1SEC
 
-        self._eco2 = None # pylint: disable=invalid-name
-        self._tvoc = None # pylint: disable=invalid-name
+        self._eco2 = None  # pylint: disable=invalid-name
+        self._tvoc = None  # pylint: disable=invalid-name
 
     @property
     def error_code(self):
@@ -149,13 +157,13 @@ class CCS811:
                 raise RuntimeError("Error:" + str(self.error_code))
 
     @property
-    def tvoc(self): # pylint: disable=invalid-name
+    def tvoc(self):  # pylint: disable=invalid-name
         """Total Volatile Organic Compound in parts per billion."""
         self._update_data()
         return self._tvoc
 
     @property
-    def eco2(self): # pylint: disable=invalid-name
+    def eco2(self):  # pylint: disable=invalid-name
         """Equivalent Carbon Dioxide in parts per million. Clipped to 400 to 8192ppm."""
         self._update_data()
         return self._eco2
@@ -216,18 +224,22 @@ class CCS811:
         :param int low_med: Boundary between low and medium ranges
         :param int med_high: Boundary between medium and high ranges
         :param int hysteresis: Minimum difference between reads"""
-        buf = bytearray([_THRESHOLDS,
-                         ((low_med >> 8) & 0xF),
-                         (low_med & 0xF),
-                         ((med_high >> 8) & 0xF),
-                         (med_high & 0xF),
-                         hysteresis])
+        buf = bytearray(
+            [
+                _THRESHOLDS,
+                ((low_med >> 8) & 0xF),
+                (low_med & 0xF),
+                ((med_high >> 8) & 0xF),
+                (med_high & 0xF),
+                hysteresis,
+            ]
+        )
         with self.i2c_device as i2c:
             i2c.write(buf)
 
     def reset(self):
         """Initiate a software reset."""
-        #reset sequence from the datasheet
+        # reset sequence from the datasheet
         seq = bytearray([_SW_RESET, 0x11, 0xE5, 0x72, 0x8A])
         with self.i2c_device as i2c:
             i2c.write(seq)
