@@ -44,13 +44,15 @@ from adafruit_register import i2c_bits
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_CCS811.git"
 
+
 _ALG_RESULT_DATA = const(0x02)
 _RAW_DATA = const(0x03)
 _ENV_DATA = const(0x05)
 _NTC = const(0x06)
 _THRESHOLDS = const(0x10)
 
-# _BASELINE = 0x11
+_BASELINE = const(0x11)
+
 # _HW_ID = 0x20
 # _HW_VERSION = 0x21
 # _FW_BOOT_VERSION = 0x23
@@ -106,7 +108,6 @@ class CCS811:
             raise RuntimeError(
                 "Device ID returned is not correct! Please check your wiring."
             )
-
         # try to start the app
         buf = bytearray(1)
         buf[0] = 0xF4
@@ -155,6 +156,32 @@ class CCS811:
 
             if self.error:
                 raise RuntimeError("Error:" + str(self.error_code))
+
+    @property
+    def baseline(self):
+        """
+        The propery reads and returns the current baseline value.
+        The returned value is packed into an integer.
+        Later the same integer can be used in order
+        to set a new baseline.
+        """
+        buf = bytearray(3)
+        buf[0] = _BASELINE
+        with self.i2c_device as i2c:
+            i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
+        return struct.unpack("<H", buf[1:])[0]
+
+    @baseline.setter
+    def baseline(self, baseline_int):
+        """
+        The property lets you set a new baseline. As a value accepts
+        integer which represents packed baseline 2 bytes value.
+        """
+        buf = bytearray(3)
+        buf[0] = _BASELINE
+        struct.pack_into("<H", buf, 1, baseline_int)
+        with self.i2c_device as i2c:
+            i2c.write(buf)
 
     @property
     def tvoc(self):  # pylint: disable=invalid-name
