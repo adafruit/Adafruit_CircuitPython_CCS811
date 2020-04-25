@@ -44,7 +44,6 @@ from adafruit_register import i2c_bits
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_CCS811.git"
 
-_BASELINE_PACKING_FORMAT = "<H"
 
 _ALG_RESULT_DATA = const(0x02)
 _RAW_DATA = const(0x03)
@@ -161,25 +160,26 @@ class CCS811:
     @property
     def baseline(self):
         """
-        The function read and return the current baseline value.
+        The propery reads and returns the current baseline value.
         The returned value is packed into an integer.
-        Later the same integer can be passed `set_baseline` function
-        in order to set a new baseline.
+        Later the same integer can be used in order
+        to set a new baseline.
         """
         buf = bytearray(3)
         buf[0] = _BASELINE
         with self.i2c_device as i2c:
             i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
-        return struct.unpack(_BASELINE_PACKING_FORMAT, buf[1:])[0]
+        return struct.unpack("<H", buf[1:])[0]
 
-    def set_baseline(self, baseline_int):
+    @baseline.setter
+    def baseline(self, baseline_int):
         """
-        The function lets you set a new baseline. As an argument accepts
+        The property lets you set a new baseline. As a value accepts
         integer which represents packed baseline 2 bytes value.
         """
         buf = bytearray(3)
         buf[0] = _BASELINE
-        struct.pack_into(_BASELINE_PACKING_FORMAT, buf, 1, baseline_int)
+        struct.pack_into("<H", buf, 1, baseline_int)
         with self.i2c_device as i2c:
             i2c.write(buf)
 
