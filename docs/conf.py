@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 #
+# SPDX-License-Identifier: MIT
+
 # Adafruit's CCS811 Library documentation build configuration file, created by
 # sphinx-quickstart on Fri Nov 11 21:37:36 2016.
 #
