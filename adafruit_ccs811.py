@@ -3,11 +3,24 @@
 # SPDX-License-Identifier: MIT
 
 """
-`CCS811` - Adafruit CCS811 Air Quality Sensor Breakout - VOC and eCO2
+`adafruit_ccs811`
 ======================================================================
 This library supports the use of the CCS811 air quality sensor in CircuitPython.
 
 Author(s): Dean Miller for Adafruit Industries
+
+**Hardware:**
+
+* `Adafruit CCS811 Air Quality Sensor Breakout - VOC and eCO2
+  <https://www.adafruit.com/product/3566>`_
+
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware for the supported boards:
+  https://github.com/adafruit/circuitpython/releases
+
+ * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
+ * Adafruit's Register library: https://github.com/adafruit/Adafruit_CircuitPython_Register
 
 **Notes:**
 
@@ -61,8 +74,33 @@ _REF_RESISTOR = const(100000)
 class CCS811:
     """CCS811 gas sensor driver.
 
-    :param ~busio.I2C i2c: The I2C bus.
-    :param int addr: The I2C address of the CCS811.
+    :param ~busio.I2C i2c_bus: The I2C bus the BME280 is connected to
+    :param int address: The I2C address of the CCS811. Defaults to :const:`0x5A`
+
+    **Quickstart: Importing and using the CCS811**
+
+        Here is an example of using the :class:`CCS811` class.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import board
+            import adafruit_ccs811
+
+        Once this is done you can define your `board.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = board.I2C()   # uses board.SCL and board.SDA
+            ccs811 = adafruit_ccs811.CCS811(i2c)
+
+        Now you have access to the :attr:`eco2` and :attr:`tvoc` attributes.
+
+        .. code-block:: python
+
+            eco2 = ccs811.eco2
+            tvoc = ccs811.tvoc
+
     """
 
     # set up the registers
@@ -142,7 +180,7 @@ class CCS811:
     @property
     def baseline(self):
         """
-        The propery reads and returns the current baseline value.
+        The property reads and returns the current baseline value.
         The returned value is packed into an integer.
         Later the same integer can be used in order
         to set a new baseline.

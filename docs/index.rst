@@ -23,6 +23,8 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    Adafruit CCS811 Air Quality Sensor Breakout - VOC and eCO2 Learning Guide <https://learn.adafruit.com/adafruit-ccs811-air-quality-sensor>
+
 .. toctree::
     :caption: Related Products
 
