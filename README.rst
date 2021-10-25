@@ -89,6 +89,11 @@ To read the gas sensor simply read the attributes:
 
     print("CO2: ", ccs.eco2, " TVOC:", ccs.tvoc)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ccs811/en/latest/>`_.
+
 Contributing
 ============
 
