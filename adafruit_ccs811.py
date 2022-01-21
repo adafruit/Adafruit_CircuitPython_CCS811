@@ -138,7 +138,7 @@ class CCS811:
         # make sure there are no errors and we have entered application mode
         if self.error:
             raise RuntimeError(
-                "Device returned a error! Try removing and reapplying power to "
+                "Device returned an error! Try removing and reapplying power to "
                 "the device and running the code again."
             )
         if not self.fw_mode:
