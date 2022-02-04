@@ -36,6 +36,12 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from adafruit_register import i2c_bit
 from adafruit_register import i2c_bits
 
+try:
+    from typing import Optional
+    from busio import I2C
+except ImportError:
+    pass
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_CCS811.git"
 
@@ -120,7 +126,7 @@ class CCS811:
     temp_offset = 0.0
     """Temperature offset."""
 
-    def __init__(self, i2c_bus, address=0x5A):
+    def __init__(self, i2c_bus: I2C, address: int = 0x5A) -> None:
         self.i2c_device = I2CDevice(i2c_bus, address)
 
         # check that the HW id is correct
@@ -156,7 +162,7 @@ class CCS811:
         self._tvoc = None  # pylint: disable=invalid-name
 
     @property
-    def error_code(self):
+    def error_code(self) -> int:
         """Error code"""
         buf = bytearray(2)
         buf[0] = 0xE0
@@ -164,7 +170,7 @@ class CCS811:
             i2c.write_then_readinto(buf, buf, out_end=1, in_start=1)
         return buf[1]
 
-    def _update_data(self):
+    def _update_data(self) -> None:
         if self.data_ready:
             buf = bytearray(9)
             buf[0] = _ALG_RESULT_DATA
@@ -178,7 +184,7 @@ class CCS811:
                 raise RuntimeError("Error:" + str(self.error_code))
 
     @property
-    def baseline(self):
+    def baseline(self) -> int:
         """
         The property reads and returns the current baseline value.
         The returned value is packed into an integer.
@@ -192,7 +198,7 @@ class CCS811:
         return struct.unpack("<H", buf[1:])[0]
 
     @baseline.setter
-    def baseline(self, baseline_int):
+    def baseline(self, baseline_int: int) -> None:
         """
         The property lets you set a new baseline. As a value accepts
         integer which represents packed baseline 2 bytes value.
@@ -204,19 +210,19 @@ class CCS811:
             i2c.write(buf)
 
     @property
-    def tvoc(self):  # pylint: disable=invalid-name
+    def tvoc(self) -> Optional[int]:  # pylint: disable=invalid-name
         """Total Volatile Organic Compound in parts per billion."""
         self._update_data()
         return self._tvoc
 
     @property
-    def eco2(self):  # pylint: disable=invalid-name
+    def eco2(self) -> Optional[int]:  # pylint: disable=invalid-name
         """Equivalent Carbon Dioxide in parts per million. Clipped to 400 to 8192ppm."""
         self._update_data()
         return self._eco2
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         """
         .. deprecated:: 1.1.5
            Hardware support removed by vendor
@@ -241,7 +247,7 @@ class CCS811:
         ntc_temp -= 273.15
         return ntc_temp - self.temp_offset
 
-    def set_environmental_data(self, humidity, temperature):
+    def set_environmental_data(self, humidity: int, temperature: float) -> None:
         """Set the temperature and humidity used when computing eCO2 and TVOC values.
 
         :param int humidity: The current relative humidity in percent.
@@ -263,7 +269,9 @@ class CCS811:
         with self.i2c_device as i2c:
             i2c.write(buf)
 
-    def set_interrupt_thresholds(self, low_med, med_high, hysteresis):
+    def set_interrupt_thresholds(
+        self, low_med: int, med_high: int, hysteresis: int
+    ) -> None:
         """Set the thresholds used for triggering the interrupt based on eCO2.
         The interrupt is triggered when the value crossed a boundary value by the
         minimum hysteresis value.
@@ -284,7 +292,7 @@ class CCS811:
         with self.i2c_device as i2c:
             i2c.write(buf)
 
-    def reset(self):
+    def reset(self) -> None:
         """Initiate a software reset."""
         # reset sequence from the datasheet
         seq = bytearray([_SW_RESET, 0x11, 0xE5, 0x72, 0x8A])
