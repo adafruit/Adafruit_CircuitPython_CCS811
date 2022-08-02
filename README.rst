@@ -14,6 +14,10 @@ Adafruit CircuitPython CCS811 Library
     :target: https://github.com/adafruit/Adafruit_CircuitPython_CCS811/actions/
     :alt: Build Status
 
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code Style: Black
+
 CircuitPython driver for the `CCS811 air quality sensor <https://www.adafruit.com/product/3566>`_.
 
 Dependencies
