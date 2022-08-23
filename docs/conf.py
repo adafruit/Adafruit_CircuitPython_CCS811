@@ -22,6 +22,7 @@
 #
 import os
 import sys
+import datetime
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -79,6 +80,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "Adafruit's CCS811 Library"
+current_year = str(datetime.datetime.now().year)
 copyright = "2016, Dean Miller, Scott Shawcroft"
 author = "Dean Miller, Scott Shawcroft"
 
