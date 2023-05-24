@@ -37,7 +37,7 @@ sys.path.insert(0, os.path.abspath(".."))
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinxconrib.jquery",
+    "sphinxcontrib.jquery",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
