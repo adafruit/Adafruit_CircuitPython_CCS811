@@ -41,8 +41,6 @@ board.DISPLAY.root_group = main_group
 # begin main loop
 while True:
     # update the text of the label(s) to show the sensor readings
-    display_output_label.text = (
-        f"CO2: {ccs811.eco2} PPM\nTVOC: {ccs811.tvoc} PPB"
-    )
+    display_output_label.text = f"CO2: {ccs811.eco2} PPM\nTVOC: {ccs811.tvoc} PPB"
     # wait for a bit
     time.sleep(0.5)
