@@ -12,6 +12,6 @@ DisplayIO Simpletest
 
 This is a simple test for boards with built-in display.
 
-.. literalinclude:: ../examples/cccs811_displayio_simpletest.py
+.. literalinclude:: ../examples/ccs811_displayio_simpletest.py
     :caption: examples/ccs811_displayio_simpletest.py
     :linenos:
