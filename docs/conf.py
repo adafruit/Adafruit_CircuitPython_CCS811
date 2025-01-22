@@ -57,12 +57,6 @@ intersphinx_mapping = {
     "CircuitPython": ("https://docs.circuitpython.org/en/latest/", None),
 }
 
-# Mock out micropython ourselves.
-# import imp
-# m = imp.new_module("micropython")
-# m.const = lambda x: x
-# sys.modules["micropython"] = m
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
