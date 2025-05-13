@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 import time
+
 import board
+
 import adafruit_ccs811
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
@@ -14,5 +16,5 @@ while not ccs811.data_ready:
     pass
 
 while True:
-    print("CO2: {} PPM, TVOC: {} PPB".format(ccs811.eco2, ccs811.tvoc))
+    print(f"CO2: {ccs811.eco2} PPM, TVOC: {ccs811.tvoc} PPB")
     time.sleep(0.5)
