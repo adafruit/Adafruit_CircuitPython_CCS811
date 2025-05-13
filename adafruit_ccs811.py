@@ -27,17 +27,18 @@ Author(s): Dean Miller for Adafruit Industries
 #. `Datasheet
 <https://cdn-learn.adafruit.com/assets/assets/000/044/636/original/CCS811_DS000459_2-00-1098798.pdf?1501602769>`_
 """
-import time
+
 import math
 import struct
+import time
 
-from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
-from adafruit_register import i2c_bit
-from adafruit_register import i2c_bits
+from adafruit_register import i2c_bit, i2c_bits
+from micropython import const
 
 try:
     from typing import Optional
+
     from busio import I2C
 except ImportError:
     pass
@@ -131,9 +132,7 @@ class CCS811:
 
         # check that the HW id is correct
         if self.hw_id != _HW_ID_CODE:
-            raise RuntimeError(
-                "Device ID returned is not correct! Please check your wiring."
-            )
+            raise RuntimeError("Device ID returned is not correct! Please check your wiring.")
         # try to start the app
         buf = bytearray(1)
         buf[0] = 0xF4
@@ -158,8 +157,8 @@ class CCS811:
         # default to read every second
         self.drive_mode = DRIVE_MODE_1SEC
 
-        self._eco2 = None  # pylint: disable=invalid-name
-        self._tvoc = None  # pylint: disable=invalid-name
+        self._eco2 = None
+        self._tvoc = None
 
     @property
     def error_code(self) -> int:
@@ -210,13 +209,13 @@ class CCS811:
             i2c.write(buf)
 
     @property
-    def tvoc(self) -> Optional[int]:  # pylint: disable=invalid-name
+    def tvoc(self) -> Optional[int]:
         """Total Volatile Organic Compound in parts per billion."""
         self._update_data()
         return self._tvoc
 
     @property
-    def eco2(self) -> Optional[int]:  # pylint: disable=invalid-name
+    def eco2(self) -> Optional[int]:
         """Equivalent Carbon Dioxide in parts per million. Clipped to 400 to 8192ppm."""
         self._update_data()
         return self._eco2
@@ -269,9 +268,7 @@ class CCS811:
         with self.i2c_device as i2c:
             i2c.write(buf)
 
-    def set_interrupt_thresholds(
-        self, low_med: int, med_high: int, hysteresis: int
-    ) -> None:
+    def set_interrupt_thresholds(self, low_med: int, med_high: int, hysteresis: int) -> None:
         """Set the thresholds used for triggering the interrupt based on eCO2.
         The interrupt is triggered when the value crossed a boundary value by the
         minimum hysteresis value.
